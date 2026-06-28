@@ -22,6 +22,7 @@ async def test_project(dut):
     dut.rst_n.value = 0          # press reset (active low)
     await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 1          # release reset
+    dut.ui_in.value = 1          # turn on fast-tick test mode
     await ClockCycles(dut.clk, 1)
 
     # after reset, the counter should be 0
