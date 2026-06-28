@@ -15,38 +15,19 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // --- the slow tick generator ---
-  // a big 24-bit box that counts fast clock ticks
-  reg [23:0] divider;
-
-  always @(posedge clk) begin
-    if (!rst_n)
-      divider <= 0;
-    else
-      divider <= divider + 1;
-  end
-
-  // this is 1 for a single fast tick, each time the divider rolls over
- wire slow_tick = ui_in[0] ? (divider[1:0] == 0) : (divider == 0);
-    
-  // --- your visible counter ---
   reg [7:0] count;
 
   always @(posedge clk) begin
     if (!rst_n)
       count <= 0;
-    else if (slow_tick)        // only step forward on the slow tick
+    else
       count <= count + 1;
   end
 
-  // send the visible count to the 8 LED pins
   assign uo_out  = count;
-
-  // unused bidirectional pins, switched off
   assign uio_out = 0;
   assign uio_oe  = 0;
 
-  // tell the tools we're deliberately not using these
   wire _unused = &{ena, ui_in, uio_in, 1'b0};
 
 endmodule
