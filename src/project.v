@@ -27,8 +27,8 @@ module tt_um_example (
   end
 
   // this is 1 for a single fast tick, each time the divider rolls over
-  wire slow_tick = (divider == 0);
-
+ wire slow_tick = ui_in[0] ? (divider[1:0] == 0) : (divider == 0);
+    
   // --- your visible counter ---
   reg [7:0] count;
 
